@@ -1,0 +1,39 @@
+I. Interactive job
+II. Job on server
+
+I. How to do an interactive job on spirit:
+
+1. Connect to spirit:
+ssh -X name@spirit1.ipsl.fr
+(base) agaudin@spirit1:~$
+
+2. Submit the job (For parameters see: https://documentations.ipsl.fr/spirit/spirit_clusters/slurm.html)
+srun --nodes=1 --mem=30G --time=8:00:00 --pty bash
+(base) agaudin@spirit64-03:~$
+
+3. Launch jupyter (change port number 1234)
+jupyter notebook --no-browser --port=1234 --ip=0.0.0.0
+
+4. Open another terminal (change port number 1234 and 64-03)
+ssh -L 1234:spirit64-03:1234 nom@spirit1.ipsl.fr
+
+5. Open the link obtained in 3., and enter the token if first connection
+
+II. How to do a job on the server:
+
+1. Connect to spirit:
+ssh -X name@spirit1.ipsl.fr
+
+2. Create the job.sh which launches the file.py script with the lines:
+
+#!/bin/bash
+#SBATCH --mem=80GB
+#SBATCH --time=10:00:00
+#SBATCH --partition zen16
+
+python3 /path/fichier.py
+
+(For parameters see: https://documentations.ipsl.fr/spirit/spirit_clusters/slurm.html)
+
+3. Run the batch in the terminal:
+sbatch /path/job.sh
